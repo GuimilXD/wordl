@@ -14,8 +14,6 @@ defmodule Wordl.Application do
       WordlWeb.Telemetry,
       # Start the PubSub system
       {Phoenix.PubSub, name: Wordl.PubSub},
-      # Start the English Dictonary
-      {Wordl.Dictionary, path: Application.get_env(:wordl, :path)},
       # Start the Endpoint (http/https)
       WordlWeb.Endpoint
       # Start a worker by calling: Wordl.Worker.start_link(arg)
