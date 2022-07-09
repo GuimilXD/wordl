@@ -14,6 +14,8 @@ defmodule Wordl.Application do
       WordlWeb.Telemetry,
       # Start the PubSub system
       {Phoenix.PubSub, name: Wordl.PubSub},
+      # Start the Dictionary system
+      {Wordl.Dictionary, path: "/usr/share/dict/words"},
       # Start the Endpoint (http/https)
       WordlWeb.Endpoint
       # Start a worker by calling: Wordl.Worker.start_link(arg)

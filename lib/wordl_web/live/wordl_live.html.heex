@@ -1,0 +1,25 @@
+<%= if @live_action == :won do %>
+  <.modal return_to={Routes.wordl_path(@socket, :index)}>
+    <.live_component
+      module={WordlWeb.WordlVictoryComponent}
+      correct_word={@correct_word}
+      id="modal"
+    />
+  </.modal>
+<% end %>
+
+<div class="flex flex-col items-center w-screen mt-10" id="key-events" phx-window-keydown="update">
+  <%= for {word, colors} <- @tries do %>
+    <.render_word word_length={@word_length} word={word} colors={colors} />
+  <% end %>
+
+  <%= if length(@tries) < @max_tries do %>
+    <.render_word word_length={@word_length} word={@current_word} />
+  <% end %>
+
+  <%= for i <- 0..(@max_tries - length(@tries)), i > 1 do %>
+    <.render_empty_row word_length={@word_length} />
+  <% end %>
+
+  <%= live_redirect "Restart?", to: Routes.wordl_path(@socket, :index), class: "p-2 bg-green-500 text-white rounded-sm m-auto m-5", id: "play-again-button" %>
+</div>

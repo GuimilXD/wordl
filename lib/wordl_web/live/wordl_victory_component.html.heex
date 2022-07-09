@@ -1,0 +1,12 @@
+<div class="flex-col"
+        phx-window-keydown={JS.dispatch("click", to: "#play-again-button")}
+        phx-key="enter">
+  <h1 class="text-center text-2xl font-bold">You won!</h1>
+  <p class="text-center texl-xl">The word was:
+    <span class="font-bold uppercase"> <%= @correct_word %> </span>
+  </p>
+  <div class="flex m-2">
+    <%= live_redirect "Play Again?", to: Routes.wordl_path(@socket, :index), class: "p-2 bg-green-500 text-white rounded-sm m-auto", id: "play-again-button" %>
+  </div>
+  <p class="text-center text-gray-500">or press enter to play again!</p>
+</div>
