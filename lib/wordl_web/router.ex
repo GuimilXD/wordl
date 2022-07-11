@@ -17,9 +17,7 @@ defmodule WordlWeb.Router do
   scope "/", WordlWeb do
     pipe_through :browser
 
-    get "/", PageController, :index
-
-    live "/wordl", WordlLive, :index
+    live "/", WordlLive, :index
   end
 
   # Other scopes may use custom stacks.
