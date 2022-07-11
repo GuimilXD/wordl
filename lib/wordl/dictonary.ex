@@ -5,7 +5,7 @@ defmodule Wordl.Dictionary do
 
   @impl true
   def init(opts) do
-    path = Keyword.get(opts, :path, "priv/static/assets/words.txt")
+    path = Keyword.get(opts, :path, "assets/words.txt")
 
     send(self(), {:read_file, path})
 
