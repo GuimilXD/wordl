@@ -8,7 +8,7 @@ defmodule Wordl.WordlLiveTest do
     test "shows typed word", %{conn: conn} do
       word = "quick"
 
-      {:ok, view, html} = live(conn, "/wordl")
+      {:ok, view, html} = live(conn, "/")
 
       refute html =~ word
 
