@@ -73,7 +73,6 @@ defmodule WordlWeb.WordlLive do
   defp handle_key(%{
 	assigns: %{
 	  current_word: current_word,
-	  tries: tries
 	}} = socket, 'backspace') when current_word != [] do
 	assign(socket, :current_word, pop(current_word))
   end
@@ -92,12 +91,6 @@ defmodule WordlWeb.WordlLive do
     do
     assign(socket, :current_word, current_word ++ [letter])
   end
-
-  defp handle_key(%{
-	assigns: %{
-	  current_word: current_word,
-	  tries: tries
-	}} = socket, key), do: socket
 
   defp pop(list) do
     list |> Enum.reverse |> tl() |> Enum.reverse
