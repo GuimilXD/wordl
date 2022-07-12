@@ -92,6 +92,8 @@ defmodule WordlWeb.WordlLive do
     assign(socket, :current_word, current_word ++ [letter])
   end
 
+  defp handle_key(socket, _key), do: socket
+
   defp pop(list) do
     list |> Enum.reverse |> tl() |> Enum.reverse
   end
