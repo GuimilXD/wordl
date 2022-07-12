@@ -141,4 +141,7 @@ defmodule WordlWeb.WordlLive do
   defp color_to_class(:green), do: "bg-lime-600 text-white"
   defp color_to_class(:white), do: "bg-white text-black"
   defp color_to_class(:empty), do: "bg-white text-white"
+
+  defp won_to_title_for_modal(true), do: "You won!"
+  defp won_to_title_for_modal(false), do: "You lost!"
 end  

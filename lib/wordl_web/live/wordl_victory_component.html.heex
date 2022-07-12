@@ -1,7 +1,7 @@
 <div class="flex-col"
         phx-window-keydown={JS.dispatch("click", to: "#play-again-button")}
         phx-key="enter">
-  <h1 class="text-center text-2xl font-bold">You won!</h1>
+  <h1 class="text-center text-2xl font-bold"><%= @title %></h1>
   <p class="text-center texl-xl">The word was:
     <span class="font-bold uppercase"> <%= @correct_word %> </span>
   </p>

@@ -1,7 +1,8 @@
-<%= if @live_action == :won do %>
+<%= if @live_action == :won or length(@tries) >= @max_tries do %>
   <.modal return_to={Routes.wordl_path(@socket, :index)}>
     <.live_component
       module={WordlWeb.WordlVictoryComponent}
+      title={won_to_title_for_modal(@won?)}
       correct_word={@correct_word}
       id="modal"
     />
