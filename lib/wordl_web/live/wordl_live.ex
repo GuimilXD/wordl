@@ -4,11 +4,8 @@ defmodule WordlWeb.WordlLive do
   alias Wordl.Dictionary
   alias Wordl.Wordl
 
-  import WordlWeb.LiveHelpers
-
   @word_length Application.fetch_env!(:wordl, :word_length)
   @max_tries Application.fetch_env!(:wordl, :max_tries)
-
 
   @impl true
   def mount(_session, _params, socket) do

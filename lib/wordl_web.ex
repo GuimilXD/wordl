@@ -95,6 +95,7 @@ defmodule WordlWeb do
       # Import basic rendering functionality (render, render_layout, etc)
       import Phoenix.View
 
+      import WordlWeb.LiveHelpers
       import WordlWeb.ErrorHelpers
       import WordlWeb.Gettext
       alias WordlWeb.Router.Helpers, as: Routes
