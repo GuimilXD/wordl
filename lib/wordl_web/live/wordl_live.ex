@@ -6,13 +6,14 @@ defmodule WordlWeb.WordlLive do
 
   @word_length Application.fetch_env!(:wordl, :word_length)
   @max_tries Application.fetch_env!(:wordl, :max_tries)
+  @dictionary "en_US"
 
   @impl true
   def mount(_session, _params, socket) do
     {:ok,
      socket
      |> assign(:tries, [])
-     |> assign(:correct_word, Dictionary.random_word(@word_length))
+     |> assign(:correct_word, Dictionary.random_word(@dictionary, @word_length))
      |> assign(:word_length, @word_length)
      |> assign(:max_tries, @max_tries)
      |> assign(:won?, false)
@@ -57,7 +58,7 @@ defmodule WordlWeb.WordlLive do
 	|> put_flash(:error, "Too few letters!")
 
       _ when length(current_word) == @word_length and length(tries) <= @max_tries ->
-	if Dictionary.has_word?(current_word) do
+	if Dictionary.has_word?(@dictionary, current_word) do
 	  socket
 	  |> assign(:tries, tries ++ [{current_word, Wordl.score(socket.assigns.correct_word, to_string(current_word))}])
 	  |> assign(:current_word, '')
