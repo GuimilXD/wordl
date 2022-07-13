@@ -8,18 +8,34 @@ defmodule Wordl.WordlLiveTest do
     test "shows typed word", %{conn: conn} do
       word = "quick"
 
-      {:ok, view, html} = live(conn, "/")
+      {:ok, view, _html} = live(conn, "/")
 
-      refute html =~ word
+      refute view_has_word?(view, word)
 
-      String.graphemes(word)
-      |> Enum.each(fn letter ->
-	render_keydown(view, "update", %{"key" => letter})
-      end)
+      type_word_into_view(view, word)
 
-      for letter <- String.graphemes(word) do
-	assert render(view) =~ letter
-      end
+      assert view_has_word?(view, word)
     end
+  end
+
+  defp view_has_word?(view, word) do
+    word
+    |> String.graphemes()
+    |> Enum.any?(&(view_has_letter?(view, &1)))
+  end
+
+  defp view_has_letter?(view, letter) do
+    view
+    |> element("#cell-letter-#{letter}")
+    |> has_element?()
+  end
+
+  defp type_word_into_view(view, word) do
+    String.graphemes(word)
+    |> Enum.each(fn letter ->
+      render_keydown(view, "update", %{"key" => letter})
+    end)
+
+    view
   end
 end

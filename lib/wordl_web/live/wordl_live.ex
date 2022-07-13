@@ -120,7 +120,7 @@ defmodule WordlWeb.WordlLive do
 
   defp render_letter(assigns) do
     ~H"""
-    <div class={"inline-flex #{color_to_class(@color)}"}>
+    <div id={"cell-letter-#{@letter}"} class={"inline-flex #{color_to_class(@color)}"}>
       <div class="w-16 pt-2 h-16 items-center text-4xl font-bold border uppercase text-center">
         <%= @letter %>
       </div>
