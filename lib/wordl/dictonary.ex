@@ -34,7 +34,9 @@ defmodule Wordl.Dictionary do
     GenServer.call(via_tuple(dict_name), {:has_word?, word})
   end
 
-  def has_word?(dict_name, word), do: word |> to_string() |> has_word?(dict_name)
+  def has_word?(dict_name, word) do
+    has_word?(dict_name, to_string(word))
+  end
 
   def random_word(dict_name, length) do
     GenServer.call(via_tuple(dict_name), {:random_word, length})
