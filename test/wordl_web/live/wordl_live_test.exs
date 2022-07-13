@@ -26,7 +26,7 @@ defmodule Wordl.WordlLiveTest do
 
   defp view_has_letter?(view, letter) do
     view
-    |> element("#cell-letter-#{letter}")
+    |> element("#cell-letter", letter)
     |> has_element?()
   end
 
