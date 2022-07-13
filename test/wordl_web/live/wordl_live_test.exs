@@ -5,17 +5,25 @@ defmodule Wordl.WordlLiveTest do
 
   # TODO: Implement Mocking & Improve Testing
   describe "WordlLive" do
-    test "shows typed word", %{conn: conn} do
-      word = "quick"
+    test "gives feedback on guesses based on correct word", %{conn: conn} do
+      guesses = ~w(quick piano likes crazy notes)
 
       {:ok, view, _html} = live(conn, "/")
 
-      refute view_has_word?(view, word)
+      refute view_has_words?(view, guesses)
 
-      type_word_into_view(view, word)
+      for guess <- guesses  do
+	view
+	|> type_word_into_view(guess)
+	|> make_guess
+      end
 
-      assert view_has_word?(view, word)
+      assert view_has_words?(view, guesses)
     end
+  end
+
+  defp view_has_words?(view, words) do
+    Enum.any?(words, &(view_has_word?(view, &1)))
   end
 
   defp view_has_word?(view, word) do
@@ -37,5 +45,10 @@ defmodule Wordl.WordlLiveTest do
     end)
 
     view
+  end
+
+  defp make_guess(view) do
+    view
+    |> render_keydown("update", %{"key" => "Enter"})
   end
 end
