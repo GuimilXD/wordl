@@ -16,7 +16,6 @@ defmodule WordlWeb.WordlLive do
      |> assign(:correct_word, Dictionary.random_word(@dictionary, @word_length))
      |> assign(:word_length, @word_length)
      |> assign(:max_tries, @max_tries)
-     |> assign(:won?, false)
      |> assign(:current_word, '')}
   end
 
@@ -27,7 +26,7 @@ defmodule WordlWeb.WordlLive do
       |> String.downcase()
       |> String.to_charlist()
 
-    if socket.assigns.won? do
+    if socket.assigns.live_action == :won do
       {:noreply, socket}
     else
       {:noreply, handle_key(socket, key)}
@@ -50,7 +49,6 @@ defmodule WordlWeb.WordlLive do
 	socket
 	|> assign(:tries, tries ++ [{current_word, Wordl.score(socket.assigns.correct_word, to_string(current_word))}])
 	|> assign(:current_word, '')
-	|> assign(:won?, true)
 	|> assign(:live_action, :won)
 
       _ when length(current_word) < @word_length ->
@@ -135,6 +133,6 @@ defmodule WordlWeb.WordlLive do
   defp color_to_class(:white), do: "bg-white text-black"
   defp color_to_class(:empty), do: "bg-white text-transparent"
 
-  defp won_to_title_for_modal(true), do: "You won!"
-  defp won_to_title_for_modal(false), do: "You lost!"
+  defp modal_title(:won), do: "You won!"
+  defp modal_title(_), do: "You lost!"
 end  

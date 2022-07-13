@@ -2,7 +2,7 @@
   <.modal return_to={Routes.wordl_path(@socket, :index)}>
     <.live_component
       module={WordlWeb.WordlVictoryComponent}
-      title={won_to_title_for_modal(@won?)}
+      title={modal_title(@live_action)}
       correct_word={@correct_word}
       id="modal"
     />
