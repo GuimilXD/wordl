@@ -3,25 +3,24 @@ defmodule DictionaryTest do
 
   alias Wordl.Dictionary
 
-  #TODO: Implement Property-based testing
+  describe "dictionary" do
+    setup do
+      dict_name = "test_dict"
 
-  setup %{test: name} do
-    {:ok, pid} = Dictionary.start_link(name: name)
-    {:ok, name: name, pid: pid}
-  end
+      Dictionary.start_link(name: dict_name, path: "assets/dictionaries/en_US.txt")
 
-  test "has_word? returns true if 5-letter word is in dictionary" do 
-    assert Dictionary.has_word?("fox")
-    assert Dictionary.has_word?("egret")
-    refute Dictionary.has_word?("orace")
-    refute Dictionary.has_word?("ummagumma")
-  end
-
-  test "random_word returns a random word with given length" do
-    for i <- 2..20 do
-      assert Dictionary.random_word(i) |> Dictionary.has_word?
-      assert String.match?(Dictionary.random_word(i), ~r/^[a-z]{#{i}}$/)
+      %{dict_name: dict_name}
     end
 
+    test "has_word/2 returns true is word in is dictionary", %{dict_name: dict_name} do
+      assert Dictionary.has_word?(dict_name, "quick")
+      refute Dictionary.has_word?(dict_name, "olá")
+    end
+
+    test "random_word/2 returns a random word with a given length", %{dict_name: dict_name} do
+      random_word = Dictionary.random_word(dict_name, 5)
+      assert Dictionary.has_word?(dict_name, random_word)
+      assert String.length(random_word) == 5
+    end
   end
 end
