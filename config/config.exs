@@ -60,6 +60,8 @@ config :tailwind, version: "3.1.4", default: [
   cd: Path.expand("../assets", __DIR__)
 ]
 
+# Default settings for a Wordl game
 config :wordl,
-  word_length: 5,
-  max_tries: 5
+  default_word_length: 5,
+  default_max_tries: 5,
+  default_dictionary: "en_US"

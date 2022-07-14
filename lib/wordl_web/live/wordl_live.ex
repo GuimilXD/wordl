@@ -1,22 +1,35 @@
 defmodule WordlWeb.WordlLive do
   use WordlWeb, :live_view
 
+
   alias Wordl.Dictionary
   alias Wordl.Wordl
-
-  @word_length Application.fetch_env!(:wordl, :word_length)
-  @max_tries Application.fetch_env!(:wordl, :max_tries)
-  @dictionary "en_US"
+  alias Wordl.Settings
 
   @impl true
   def mount(_session, _params, socket) do
     {:ok,
      socket
+     |> assign_settings()
+     |> assign_random_correct_word()
      |> assign(:tries, [])
-     |> assign(:correct_word, Dictionary.random_word(@dictionary, @word_length))
-     |> assign(:word_length, @word_length)
-     |> assign(:max_tries, @max_tries)
      |> assign(:current_word, '')}
+  end
+
+  defp assign_settings(socket) do
+    socket
+    |> assign(:settings, %Settings{})
+  end
+
+  defp assign_random_correct_word(%{
+	assigns: %{
+	  settings: %{
+	    dictionary: dictionary,
+	    word_length: word_length
+	  }
+	}} = socket) do
+   socket
+   |> assign(:correct_word, Dictionary.random_word(dictionary, word_length))
   end
 
   @impl true
@@ -42,7 +55,12 @@ defmodule WordlWeb.WordlLive do
 	assigns: %{
 	  current_word: current_word,
 	  correct_word: correct_word,
-	  tries: tries
+	  tries: tries,
+	  settings: %{
+	    dictionary: dictionary,
+	    word_length: word_length,
+	    max_tries: max_tries
+	  },
 	}} = socket, 'enter') do
     case to_string(current_word) do
       ^correct_word ->
@@ -51,12 +69,12 @@ defmodule WordlWeb.WordlLive do
 	|> assign(:current_word, '')
 	|> assign(:live_action, :won)
 
-      _ when length(current_word) < @word_length ->
+      _ when length(current_word) < word_length ->
 	socket
 	|> put_flash(:error, "Too few letters!")
 
-      _ when length(current_word) == @word_length and length(tries) <= @max_tries ->
-	if Dictionary.has_word?(@dictionary, current_word) do
+      _ when length(current_word) == word_length and length(tries) <= max_tries ->
+	if Dictionary.has_word?(dictionary, current_word) do
 	  socket
 	  |> assign(:tries, tries ++ [{current_word, Wordl.score(socket.assigns.correct_word, to_string(current_word))}])
 	  |> assign(:current_word, '')
@@ -76,14 +94,18 @@ defmodule WordlWeb.WordlLive do
   defp handle_key(%{
 	assigns: %{
 	  current_word: current_word,
-	  tries: tries
+	  tries: tries,
+	  settings: %{
+	    word_length: word_length,
+	    max_tries: max_tries
+	  }
 	}} = socket, letter)
   when
   letter >= 'a' and
   letter <= 'z' and
   length(letter) == 1 and
-  length(current_word) < @word_length and
-  length(tries) < @max_tries 
+  length(current_word) < word_length and
+  length(tries) < max_tries 
     do
     assign(socket, :current_word, current_word ++ [letter])
   end
@@ -96,13 +118,12 @@ defmodule WordlWeb.WordlLive do
 
   defp render_empty_row(assigns) do
     ~H""" 
-    <.render_word word={List.duplicate(0, @word_length)} colors={List.duplicate(:empty, @word_length)} />
+    <.render_word word_length={@word_length} word={List.duplicate(0, @word_length)} colors={List.duplicate(:empty, @word_length)} />
     """
   end
 
   defp render_word(assigns) do
     assigns = Map.put_new(assigns, :colors, List.duplicate(:white, length(assigns.word)))
-    assigns = Map.put_new(assigns, :word_length, @word_length)
 
     ~H"""
     <div class="">
