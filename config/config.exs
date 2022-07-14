@@ -63,5 +63,5 @@ config :tailwind, version: "3.1.4", default: [
 # Default settings for a Wordl game
 config :wordl,
   default_word_length: 5,
-  default_max_tries: 5,
+  default_max_tries: 6,
   default_dictionary: "en_US"
