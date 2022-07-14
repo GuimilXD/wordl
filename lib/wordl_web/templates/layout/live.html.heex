@@ -1,4 +1,14 @@
 <main class="container">
+  <header class="w-screen flex flex-row border-b-2 p-2">
+    <%= live_redirect to: Routes.wordl_path(@socket, :index) do %>
+      <.icon name={:refresh} class="w-7 mt-2 m-1" />
+    <% end %>
+    <h1 class="m-auto text-4xl font-bold uppercase text-center">Wordl</h1>
+    <%= live_redirect to: Routes.wordl_path(@socket, :settings) do %>
+      <.icon name={:cog} class="w-7 mt-2 m-1" />
+    <% end %>
+  </header>
+    
   <.flash flash={@flash} kind={:info}/>
   <.flash flash={@flash} kind={:error}/>
 

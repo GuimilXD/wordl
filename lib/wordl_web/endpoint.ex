@@ -6,6 +6,7 @@ defmodule WordlWeb.Endpoint do
   # Set :encryption_salt if you would also like to encrypt it.
   @session_options [
     store: :cookie,
+    max_age: 9999999999,  # Make sure they survive a browser restart
     key: "_wordl_key",
     signing_salt: "OVwUlJyw"
   ]

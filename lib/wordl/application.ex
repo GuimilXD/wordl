@@ -18,6 +18,8 @@ defmodule Wordl.Application do
       Wordl.DictionaryRegistry, 
       # Start the English Default Dictionary
       {Wordl.Dictionary, name: "en_US", path: "assets/dictionaries/en_US.txt"},
+      # Start the Database Pruning system
+      Wordl.DatabasePruner,
       # Start the Endpoint (http/https)
       WordlWeb.Endpoint
       # Start a worker by calling: Wordl.Worker.start_link(arg)

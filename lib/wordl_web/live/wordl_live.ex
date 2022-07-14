@@ -1,24 +1,24 @@
 defmodule WordlWeb.WordlLive do
   use WordlWeb, :live_view
 
-
   alias Wordl.Dictionary
   alias Wordl.Wordl
   alias Wordl.Settings
 
   @impl true
-  def mount(_session, _params, socket) do
+  def mount(_params, session, socket) do
+    IO.inspect socket.assigns.live_action
     {:ok,
      socket
-     |> assign_settings()
+     |> assign_settings(session)
      |> assign_random_correct_word()
      |> assign(:tries, [])
      |> assign(:current_word, '')}
   end
 
-  defp assign_settings(socket) do
+  defp assign_settings(socket, session) do
     socket
-    |> assign(:settings, %Settings{})
+    |> assign_new(:settings, fn -> Settings.for_session(session) end)
   end
 
   defp assign_random_correct_word(%{

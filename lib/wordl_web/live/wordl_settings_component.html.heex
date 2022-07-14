@@ -1,0 +1,29 @@
+<div class="m-auto"
+     phx-window-keydown={JS.dispatch("click", to: "#settings-save-button")}
+     phx-key="enter">
+  <.form
+     class="flex flex-col items-center justify-center"
+     let={f}
+     for={@settings_changeset}
+     phx-target={@myself}
+     phx-submit="update_settings">
+
+     <div class="m-2">
+       <%= label f, :word_length %>
+       <%= select f, :word_length, 5..20 %>
+     </div>
+
+     <div class="m-2">
+       <%= label f, :max_tries, class: "text-right" %>
+       <%= select f, :max_tries, 2..10 %>
+     </div>
+
+
+     <div class="m-2">
+       <%= label f, :dictionary %>
+       <%= select f, :dictionary, ["English": "en_US"] %>
+     </div>
+
+     <%= submit "Save", id: "settings-save-button", class: "pr-6 pl-6 p-2 bg-green-400 text-white rounded-md" %>
+  </.form>
+</div>
