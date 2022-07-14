@@ -41,7 +41,7 @@ defmodule Wordl.WordlLiveTest do
   defp type_word_into_view(view, word) do
     String.graphemes(word)
     |> Enum.each(fn letter ->
-      render_keydown(view, "update", %{"key" => letter})
+      render_keydown(view, "keydown", %{"key" => letter})
     end)
 
     view
@@ -49,6 +49,6 @@ defmodule Wordl.WordlLiveTest do
 
   defp make_guess(view) do
     view
-    |> render_keydown("update", %{"key" => "Enter"})
+    |> render_keydown("keydown", %{"key" => "Enter"})
   end
 end

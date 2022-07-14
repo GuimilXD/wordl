@@ -33,7 +33,7 @@ defmodule WordlWeb.WordlLive do
   end
 
   @impl true
-  def handle_event("update", %{"key" => key}, socket) do
+  def handle_event("keydown", %{"key" => key}, socket) do
     key =
       key
       |> String.downcase()

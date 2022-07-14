@@ -9,7 +9,7 @@
   </.modal>
 <% end %>
 
-<div class="flex flex-col items-center w-screen mt-10" id="key-events" phx-window-keydown="update">
+<div class="flex flex-col items-center w-screen mt-10" id="key-events" phx-window-keydown="keydown">
   <%= for {word, colors} <- @tries do %>
     <.render_word word_length={@settings.word_length} word={word} colors={colors} />
   <% end %>
