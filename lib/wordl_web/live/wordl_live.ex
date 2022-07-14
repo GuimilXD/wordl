@@ -7,7 +7,6 @@ defmodule WordlWeb.WordlLive do
 
   @impl true
   def mount(_params, session, socket) do
-    IO.inspect socket.assigns.live_action
     {:ok,
      socket
      |> assign_settings(session)
