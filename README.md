@@ -19,6 +19,7 @@ It features:
 
 - Unlimited Play (Words are choosen randomly from a dictionary)
 - Quick Restart (Press Enter to restart)
+- Multiple Dictionaries Support
 
 
 ## Development Setup
