@@ -7,6 +7,12 @@ defmodule Wordl.Wordl do
 
   defdelegate score(target, guess), to: GameLogic, as: :score
 
+  def create_settings(attrs \\ %{}) do
+    %Settings{}
+    |> Settings.changeset(attrs)
+    |> Repo.insert()
+  end
+
   def change_settings(%Settings{} = settings, attrs \\ %{}) do
     Settings.changeset(settings, attrs)
   end
