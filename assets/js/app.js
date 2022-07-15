@@ -27,13 +27,20 @@ import topbar from "../vendor/topbar"
 
 let Hooks = {}
 
-Hooks.FormInput = {
-    mounted() {
-	this.el.addEventListener("focusout", () => {
-	    this.el.focus()
-	})
-    }
+Hooks.Flash = {
+  mounted(){
+    let hide = () => liveSocket.execJS(this.el, this.el.getAttribute("phx-click"))
+    this.timer = setTimeout(() => hide(), 2000)
+    this.el.addEventListener("phx:hide-start", () => clearTimeout(this.timer))
+    this.el.addEventListener("mouseover", () => {
+      clearTimeout(this.timer)
+      this.timer = setTimeout(() => hide(), 2000)
+    })
+  },
+  destroyed(){ clearTimeout(this.timer) }
 }
+
+
 
 let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content")
 let liveSocket = new LiveSocket("/live", Socket, {params: {_csrf_token: csrfToken}, hooks: Hooks})
