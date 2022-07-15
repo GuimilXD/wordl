@@ -64,4 +64,5 @@ config :tailwind, version: "3.1.4", default: [
 config :wordl,
   default_word_length: 5,
   default_max_tries: 6,
-  default_dictionary: "en_US"
+  default_dictionary: "English",
+  dictionaries_dir_path: "assets/dictionaries"

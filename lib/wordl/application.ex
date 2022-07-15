@@ -16,8 +16,8 @@ defmodule Wordl.Application do
       {Phoenix.PubSub, name: Wordl.PubSub},
       # Start the Dictionary Registry system
       Wordl.DictionaryRegistry, 
-      # Start the English Default Dictionary
-      {Wordl.Dictionary, name: "en_US", path: "assets/dictionaries/en_US.txt"},
+      # Start the Dictionary Registerer system
+      {Wordl.DictionaryRegisterer, path: Application.fetch_env!(:wordl, :dictionaries_dir_path)},
       # Start the Database Pruning system
       Wordl.DatabasePruner,
       # Start the Endpoint (http/https)

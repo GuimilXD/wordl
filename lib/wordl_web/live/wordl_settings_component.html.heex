@@ -21,7 +21,7 @@
 
      <div class="m-2">
        <%= label f, :dictionary %>
-       <%= select f, :dictionary, ["English": "en_US"] %>
+       <%= select f, :dictionary, DictionaryRegisterer.list_dictionaries() %>
      </div>
 
      <%= submit "Save", id: "settings-save-button", class: "pr-6 pl-6 p-2 bg-green-400 text-white rounded-md" %>

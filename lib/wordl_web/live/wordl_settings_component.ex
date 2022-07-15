@@ -1,6 +1,8 @@
 defmodule WordlWeb.WordlSettingsComponent do
   use WordlWeb, :live_component
 
+  alias Wordl.DictionaryRegisterer
+
   alias Wordl.Wordl
   alias Phoenix.LiveView.JS
 
@@ -20,7 +22,6 @@ defmodule WordlWeb.WordlSettingsComponent do
     |> assign(:settings_changeset, Wordl.change_settings(settings))
   end
 
-
   @impl true
   def handle_event("update_settings", %{"settings" => settings_params}, %{assigns: %{settings: settings}} = socket) do
     case Wordl.insert_or_update_settings(settings, settings_params) do
@@ -36,5 +37,10 @@ defmodule WordlWeb.WordlSettingsComponent do
 	 socket
 	 |> assign(:settings_changeset, changeset)}
     end
+  end
+
+  defp list_dictionaries() do
+    DictionaryRegisterer.list_dictionaries()
+
   end
 end
