@@ -1,5 +1,5 @@
 defmodule DictionaryRegistererTest do
-  use ExUnit.Case
+  use ExUnit.Case, async: true
 
   alias Wordl.DictionaryRegisterer
 
@@ -13,11 +13,11 @@ defmodule DictionaryRegistererTest do
 	|> Enum.map(&(Path.basename(&1, ".txt")))
 	|> Enum.sort()
 
-      assert dicts_name == DictionaryRegisterer.list_dictionaries()
+      assert Enum.all?(dicts_name, &Enum.member?(DictionaryRegisterer.list_dictionaries(), &1))
     end
 
     test "add_dictionaries/2 adds to list and registers new dictionary" do
-      assert :ok == DictionaryRegisterer.add_dictionary("assets/dictionaries/en_US.txt", "test_dict")
+      assert :ok == DictionaryRegisterer.add_dictionary("assets/dictionaries/English.txt", "test_dict")
       assert "test_dict" in DictionaryRegisterer.list_dictionaries
     end
   end

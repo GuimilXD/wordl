@@ -7,7 +7,7 @@ defmodule DictionaryTest do
     setup do
       dict_name = "test_dict"
 
-      Dictionary.start_link(name: dict_name, path: "assets/dictionaries/en_US.txt")
+      Dictionary.start_link(name: dict_name, path: "assets/dictionaries/English.txt")
 
       %{dict_name: dict_name}
     end
