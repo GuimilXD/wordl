@@ -125,7 +125,7 @@ defmodule WordlWeb.WordlLive do
     assigns = Map.put_new(assigns, :colors, List.duplicate(:white, length(assigns.word)))
 
     ~H"""
-    <div class="">
+    <div class="inline-block">
       <%= for {letter, color} <- Enum.zip(@word, @colors) do %>
         <.render_letter letter={letter} color={color} />
       <% end %>
@@ -139,8 +139,8 @@ defmodule WordlWeb.WordlLive do
 
   defp render_letter(assigns) do
     ~H"""
-    <div class={"inline-flex #{color_to_class(@color)}"}>
-      <div id="cell-letter" class="w-16 pt-2 h-16 items-center text-4xl font-bold border uppercase text-center">
+    <div class={"inline-block flex-nowrap shrink #{color_to_class(@color)}"}>
+      <div class="cell-letter box-border select-none text-xl md:text-2xl font-bold border items-center text-center uppercase w-10 h-10 md:w-17 md:h-17 leading-8">
         <%= @letter %>
       </div>
     </div>
@@ -155,4 +155,56 @@ defmodule WordlWeb.WordlLive do
 
   defp modal_title(:won), do: "You won!"
   defp modal_title(_), do: "You lost!"
+
+  defp render_keyboard(assigns) do
+    ~H"""
+    <div class="m-3 flex flex-col items-center">
+      <.render_keyboard_row keys="qwertyuiop"} />
+      <.render_keyboard_row keys="asdfghjkl" />
+      <.render_keyboard_row keys="zxcvbnm" has_enter has_backspace />
+    </div>
+    """
+  end
+
+  defp render_keyboard_row(assigns) do
+    assigns =
+      assigns
+      |> Map.put_new(:has_enter, false)
+      |> Map.put_new(:has_backspace, false)
+
+    ~H"""
+    <div class="m-1">
+      <%= if @has_enter do %>
+        <button
+	  class="pt-4 pb-4 bg-gray-300 uppercase border rounded-md"
+	  id="virtual-keyboard-button-enter"
+	  data-key="Enter"
+	  phx-hook="VirtualKeyboardButton">Enter</button>
+      <% end %>
+
+      <%= for key <- String.graphemes(@keys) do %>
+        <.render_keyboard_key key={key} />
+      <% end %>
+
+      <%= if @has_backspace do %>
+        <button
+	  class="pt-4 pb-4 pr-2 pl-2 bg-gray-300 uppercase border rounded-md"
+	  id="virtual-keyboard-button-backspace"
+	  data-key="Backspace"
+	  phx-hook="VirtualKeyboardButton">
+            <.icon name={:backspace} />
+          </button>
+      <% end %>
+    </div>
+    """
+  end
+
+  defp render_keyboard_key(assigns) do
+    ~H"""
+    <button
+      class="w-6 md:w-10 pt-4 pb-4 bg-gray-300 uppercase border rounded-md"
+      id={"virtual-keyboard-button-#{@key}"}
+      phx-hook="VirtualKeyboardButton"><%= @key %></button>
+    """
+  end
 end  
