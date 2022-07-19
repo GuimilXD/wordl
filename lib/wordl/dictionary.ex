@@ -15,14 +15,16 @@ defmodule Wordl.Dictionary do
     dict =
       File.read!(path)
       |> String.split("\n", trim: true)
-      |> Enum.filter(fn word -> String.match?(word, ~r/^[a-z]+$/) end)
+      |> Enum.map(&to_ascii/1)
 
     {:noreply, dict}
   end
 
   @impl true
   def handle_call({:has_word?, word}, _, dict) do
-   {:reply, word in dict, dict}
+    word_without_accents = to_ascii(word)
+
+    {:reply, word_without_accents in dict, dict}
   end
 
   @impl true
@@ -50,5 +52,10 @@ defmodule Wordl.Dictionary do
 
   defp via_tuple(dict_name) do
     Wordl.DictionaryRegistry.via_tuple({__MODULE__, dict_name})
+  end
+
+  defp to_ascii(string) do string
+    |> String.normalize(:nfd)
+    |> String.replace(~r/[^A-z\s]/u, "")
   end
 end

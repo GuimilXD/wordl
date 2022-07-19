@@ -64,7 +64,7 @@ defmodule WordlWeb.WordlLive do
     case to_string(current_word) do
       ^correct_word ->
 	socket
-	|> assign(:tries, tries ++ [{current_word, Wordl.score(socket.assigns.correct_word, to_string(current_word))}])
+	|> assign_score(current_word, correct_word)
 	|> assign(:current_word, '')
 	|> assign(:live_action, :won)
 
@@ -75,7 +75,7 @@ defmodule WordlWeb.WordlLive do
       _ when length(current_word) == word_length and length(tries) <= max_tries ->
 	if Dictionary.has_word?(dictionary, current_word) do
 	  socket
-	  |> assign(:tries, tries ++ [{current_word, Wordl.score(socket.assigns.correct_word, to_string(current_word))}])
+	  |> assign_score(current_word, correct_word)
 	  |> assign(:current_word, '')
 	else socket
 	  |> put_flash(:error, "Word not in dictionary!")
@@ -110,6 +110,10 @@ defmodule WordlWeb.WordlLive do
   end
 
   defp handle_key(socket, _key), do: socket
+
+  defp assign_score(socket, current_word, correct_word) do
+    assign(socket, :tries, socket.assigns.tries ++ [{current_word, Wordl.score(correct_word, to_string(current_word))}])
+  end
 
   defp pop(list) do
     list |> Enum.reverse |> tl() |> Enum.reverse
@@ -173,38 +177,38 @@ defmodule WordlWeb.WordlLive do
       |> Map.put_new(:has_backspace, false)
 
     ~H"""
-    <div class="m-1">
-      <%= if @has_enter do %>
-        <button
-	  class="pt-4 pb-4 bg-gray-300 uppercase border rounded-md"
-	  id="virtual-keyboard-button-enter"
-	  data-key="Enter"
-	  phx-hook="VirtualKeyboardButton">Enter</button>
-      <% end %>
+      <div class="m-1">
+        <%= if @has_enter do %>
+          <button
+	    class="pt-4 pb-4 bg-gray-300 uppercase border rounded-md"
+	    id="virtual-keyboard-button-enter"
+	    data-key="Enter"
+	    phx-hook="VirtualKeyboardButton">Enter</button>
+        <% end %>
 
-      <%= for key <- String.graphemes(@keys) do %>
-        <.render_keyboard_key key={key} />
-      <% end %>
+        <%= for key <- String.graphemes(@keys) do %>
+          <.render_keyboard_key key={key} />
+        <% end %>
 
-      <%= if @has_backspace do %>
-        <button
-	  class="pt-4 pb-4 pr-2 pl-2 bg-gray-300 uppercase border rounded-md"
-	  id="virtual-keyboard-button-backspace"
-	  data-key="Backspace"
-	  phx-hook="VirtualKeyboardButton">
-            <.icon name={:backspace} />
-          </button>
-      <% end %>
-    </div>
+        <%= if @has_backspace do %>
+          <button
+	    class="pt-4 pb-4 pr-2 pl-2 bg-gray-300 uppercase border rounded-md"
+	    id="virtual-keyboard-button-backspace"
+	    data-key="Backspace"
+	    phx-hook="VirtualKeyboardButton">
+              <.icon name={:backspace} />
+            </button>
+        <% end %>
+      </div>
     """
   end
 
   defp render_keyboard_key(assigns) do
     ~H"""
-    <button
-      class="w-6 md:w-10 pt-4 pb-4 bg-gray-300 uppercase border rounded-md"
-      id={"virtual-keyboard-button-#{@key}"}
-      phx-hook="VirtualKeyboardButton"><%= @key %></button>
+      <button
+        class="w-6 md:w-10 pt-4 pb-4 bg-gray-300 uppercase border rounded-md"
+        id={"virtual-keyboard-button-#{@key}"}
+        phx-hook="VirtualKeyboardButton"><%= @key %></button>
     """
   end
 end  
