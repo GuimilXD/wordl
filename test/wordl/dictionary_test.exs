@@ -14,7 +14,6 @@ defmodule DictionaryTest do
 
     test "has_word/2 returns true is word in is dictionary", %{dict_name: dict_name} do
       assert Dictionary.has_word?(dict_name, "quick")
-      refute Dictionary.has_word?(dict_name, "olá")
     end
 
     test "has_word/2 ignores accents" do
@@ -22,6 +21,11 @@ defmodule DictionaryTest do
 
       assert Dictionary.has_word?("spanish", "ábaco")
       assert Dictionary.has_word?("spanish", "abaco")
+    end
+
+    test "has_word/2 ignores capital letters", %{dict_name: dict_name} do
+      assert Dictionary.has_word?(dict_name, "abaft")
+      assert Dictionary.has_word?(dict_name, "AbAfT")
     end
 
     test "random_word/2 returns a random word with a given length", %{dict_name: dict_name} do
