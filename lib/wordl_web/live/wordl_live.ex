@@ -112,7 +112,7 @@ defmodule WordlWeb.WordlLive do
   defp handle_key(socket, _key), do: socket
 
   defp assign_score(socket, current_word, correct_word) do
-    assign(socket, :tries, socket.assigns.tries ++ [{current_word, Wordl.score(correct_word, to_string(current_word))}])
+    assign(socket, :tries, socket.assigns.tries ++ [{current_word, Wordl.score(to_ascii(correct_word), to_string(current_word))}])
   end
 
   defp pop(list) do
@@ -210,5 +210,10 @@ defmodule WordlWeb.WordlLive do
         id={"virtual-keyboard-button-#{@key}"}
         phx-hook="VirtualKeyboardButton"><%= @key %></button>
     """
+  end
+
+  defp to_ascii(string) do string
+    |> String.normalize(:nfd)
+    |> String.replace(~r/[^A-z\s]/u, "")
   end
 end  

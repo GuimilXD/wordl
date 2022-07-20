@@ -15,7 +15,6 @@ defmodule Wordl.Dictionary do
     dict =
       File.read!(path)
       |> String.split("\n", trim: true)
-      |> Enum.map(&to_ascii/1)
 
     {:noreply, dict}
   end
@@ -24,7 +23,9 @@ defmodule Wordl.Dictionary do
   def handle_call({:has_word?, word}, _, dict) do
     word_without_accents = to_ascii(word)
 
-    {:reply, word_without_accents in dict, dict}
+    has_word? = Enum.any?(dict, &(to_ascii(&1) == word_without_accents))
+
+    {:reply, has_word?, dict}
   end
 
   @impl true
@@ -57,5 +58,6 @@ defmodule Wordl.Dictionary do
   defp to_ascii(string) do string
     |> String.normalize(:nfd)
     |> String.replace(~r/[^A-z\s]/u, "")
+    |> String.downcase()
   end
 end
