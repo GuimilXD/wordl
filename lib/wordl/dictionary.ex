@@ -15,6 +15,7 @@ defmodule Wordl.Dictionary do
     dict =
       File.read!(path)
       |> String.split("\n", trim: true)
+      |> Enum.filter(fn word -> not String.match?(word, ~r/[']/) end)
 
     {:noreply, dict}
   end
